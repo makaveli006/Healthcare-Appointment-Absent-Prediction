@@ -30,6 +30,7 @@ The dataset from [Kaggle](https://www.kaggle.com/datasets/joniarroba/noshowappoi
     | 06 | Age | How old is the patient. |
     | 07 | Neighbourhood | Where the appointment takes place. |
     | 08 | Scholarship | True or False. Indicates whether the patient is enrolled in Brasilian welfare program Bolsa Família. |
+      |     |           | Bolsa Família: A Brazilian government social welfare program that provides financial aid to low-income families to reduce poverty and promote access to health and education services. |
     | 09 | Hipertension | True or False. Indicates if the patient has hypertension. |
     | 10 | Diabetes | True or False. Indicates if the patient has diabetes. |
     | 11 | Alcoholism | True or False. Indicates if the patient is an alcoholic. |

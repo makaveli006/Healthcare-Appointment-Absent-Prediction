@@ -29,12 +29,11 @@ The dataset from [Kaggle](https://www.kaggle.com/datasets/joniarroba/noshowappoi
     | 05 | AppointmentDay | The day of the actual appointment, when they have to visit the doctor. |
     | 06 | Age | How old is the patient. |
     | 07 | Neighbourhood | Where the appointment takes place. |
-    | 08 | Scholarship | True or False. Indicates whether the patient is enrolled in Brasilian welfare program Bolsa Família. |
-      |     |           | Bolsa Família: A Brazilian government social welfare program that provides financial aid to low-income families to reduce poverty and promote access to health and education services. |
-    | 09 | Hipertension | True or False. Indicates if the patient has hypertension. |
+    | 08 | Scholarship | True or False. Indicates whether the patient is enrolled in Brazilian welfare program Bolsa Família. |
+    | 09 | Hypertension | True or False. Indicates if the patient has hypertension. |
     | 10 | Diabetes | True or False. Indicates if the patient has diabetes. |
     | 11 | Alcoholism | True or False. Indicates if the patient is an alcoholic. |
-    | 12 | Handcap | True or False. Indicates if the patient is handicapped. |
+    | 12 | Handicap | True or False. Indicates if the patient is handicapped. |
     | 13 | SMS_received | True or False. Indicates if 1 or more messages sent to the patient. |
     | 14 | No-show | True or False (Target variable). Indicates if the patient missed their appointment. |
 

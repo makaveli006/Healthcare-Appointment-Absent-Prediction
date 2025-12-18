@@ -1,4 +1,4 @@
-# Predicting Patient No-Shows in Healthcare Appointments
+# Healthcare Appointment Absent Prediction project
 
 ## Business Problem
 
@@ -20,22 +20,22 @@ The dataset from [Kaggle](https://www.kaggle.com/datasets/joniarroba/noshowappoi
 
 - **Target**: Binary indicator representing whether a patient was a no-show or attended their appointment.
 
-    | No | Column Name | Description |
-    | --- | --- | --- |
-    | 01 | PatientId | Identification of a patient |
-    | 02 | AppointmentID | Identification of each appointment |
-    | 03 | Gender | Male or Female. Female is the greater proportion, women take way more care of their health in comparison to men. |
-    | 04 | ScheduledDay | The day someone called or registered the appointment, this is before the appointment of course. |
-    | 05 | AppointmentDay | The day of the actual appointment, when they have to visit the doctor. |
-    | 06 | Age | How old is the patient. |
-    | 07 | Neighbourhood | Where the appointment takes place. |
-    | 08 | Scholarship | True or False. Indicates whether the patient is enrolled in Brazilian welfare program Bolsa Família. |
-    | 09 | Hypertension | True or False. Indicates if the patient has hypertension. |
-    | 10 | Diabetes | True or False. Indicates if the patient has diabetes. |
-    | 11 | Alcoholism | True or False. Indicates if the patient is an alcoholic. |
-    | 12 | Handicap | True or False. Indicates if the patient is handicapped. |
-    | 13 | SMS_received | True or False. Indicates if 1 or more messages sent to the patient. |
-    | 14 | No-show | True or False (Target variable). Indicates if the patient missed their appointment. |
+  | No  | Column Name    | Description                                                                                                      |
+  | --- | -------------- | ---------------------------------------------------------------------------------------------------------------- |
+  | 01  | PatientId      | Identification of a patient                                                                                      |
+  | 02  | AppointmentID  | Identification of each appointment                                                                               |
+  | 03  | Gender         | Male or Female. Female is the greater proportion, women take way more care of their health in comparison to men. |
+  | 04  | ScheduledDay   | The day someone called or registered the appointment, this is before the appointment of course.                  |
+  | 05  | AppointmentDay | The day of the actual appointment, when they have to visit the doctor.                                           |
+  | 06  | Age            | How old is the patient.                                                                                          |
+  | 07  | Neighbourhood  | Where the appointment takes place.                                                                               |
+  | 08  | Scholarship    | True or False. Indicates whether the patient is enrolled in Brazilian welfare program Bolsa Família.             |
+  | 09  | Hypertension   | True or False. Indicates if the patient has hypertension.                                                        |
+  | 10  | Diabetes       | True or False. Indicates if the patient has diabetes.                                                            |
+  | 11  | Alcoholism     | True or False. Indicates if the patient is an alcoholic.                                                         |
+  | 12  | Handicap       | True or False. Indicates if the patient is handicapped.                                                          |
+  | 13  | SMS_received   | True or False. Indicates if 1 or more messages sent to the patient.                                              |
+  | 14  | No-show        | True or False (Target variable). Indicates if the patient missed their appointment.                              |
 
 ## Technical Highlights
 
@@ -62,48 +62,50 @@ Below is an overview of the project structure and the contents of each component
 ```markdown
 Medical-Appointment-No-Show-Prediction
 ├── data/
-│   ├── input/                  # Raw data files.
-│   ├── processed/              # Data files that have been cleaned and preprocessed.
-│   ├── output/                 # Output data files, including model predictions.
-│   ├── features/               # Contains the important features used for filtering the data.
-│   └── hyperparameters/        # Contains the best hyperparameters obtained from Hyperopt tuning.
+│ ├── input/ # Raw data files.
+│ ├── processed/ # Data files that have been cleaned and preprocessed.
+│ ├── output/ # Output data files, including model predictions.
+│ ├── features/ # Contains the important features used for filtering the data.
+│ └── hyperparameters/ # Contains the best hyperparameters obtained from Hyperopt tuning.
 ├── src/
-│   ├── data_loader.py          # Script for loading and preprocessing data.
-│   ├── preprocessing.py        # Script containing data preprocessing functions.
-│   ├── feature_engineering.py  # Script for feature engineering tasks.
-│   ├── modeling.py             # Contains model training, evaluation, and prediction scripts.
-│   ├── train.py                # Main script for training the model.
-│   ├── predict.py              # Script for making predictions using the trained model.
-│   ├── requirements.txt        # Lists the Python dependencies required for the project.
-│   └── snowflake_creds.py      # Contains credentials for Snowflake database access.
-├── model/                      # Trained model files and artifacts.
-├── deployment_assets/          # Files and scripts used for deploying the model.
-├── Snowflake_assets/           # Original data file for database creation and SQL queries for exploratory analysis.
-├── Project Notebook.ipynb      # Jupyter notebook detailing the model development process.
-├── Project Documentation.pdf   # Comprehensive documentation of the project.
-├── Model Deployment.ipynb      # Jupyter notebook detailing the model deployment process.
+│ ├── data_loader.py # Script for loading and preprocessing data.
+│ ├── preprocessing.py # Script containing data preprocessing functions.
+│ ├── feature_engineering.py # Script for feature engineering tasks.
+│ ├── modeling.py # Contains model training, evaluation, and prediction scripts.
+│ ├── train.py # Main script for training the model.
+│ ├── predict.py # Script for making predictions using the trained model.
+│ ├── requirements.txt # Lists the Python dependencies required for the project.
+│ └── snowflake_creds.py # Contains credentials for Snowflake database access.
+├── model/ # Trained model files and artifacts.
+├── deployment_assets/ # Files and scripts used for deploying the model.
+├── Snowflake_assets/ # Original data file for database creation and SQL queries for exploratory analysis.
+├── Project Notebook.ipynb # Jupyter notebook detailing the model development process.
+├── Project Documentation.pdf # Comprehensive documentation of the project.
+├── Model Deployment.ipynb # Jupyter notebook detailing the model deployment process.
 ```
 
 ## Usage
 
 1. **Clone the Repository**
 
-    Clone the project repository to local machine.
+   Clone the project repository to local machine.
 
-    ```bash
-    git clone https://github.com/TimKong21/Medical-Appointment-No-Show-Prediction.git
-    cd Medical-Appointment-No-Show-Prediction
-    ```
+   ```bash
+   git clone https://github.com/TimKong21/Medical-Appointment-No-Show-Prediction.git
+   cd Medical-Appointment-No-Show-Prediction
+   ```
 
 2. **Set Up a Virtual Environment**
 
    Create and activate a virtual environment to manage the project's dependencies.
-   
+
    ```bash
    # Create a virtual environment
    python -m venv env
    ```
+
    Activate the virtual environment.
+
    ```bash
    # On Windows
    env\Scripts\activate
@@ -111,16 +113,17 @@ Medical-Appointment-No-Show-Prediction
    # On MacOS/Linux
    source env/bin/activate
    ```
+
 3. **Install Dependencies**
 
    Install the required Python dependencies.
-   
+
    ```bash
    pip install -r src/requirements.txt
    ```
 
 4. **Model Training**
-   
+
    Train the model and make predictions.
 
    ```bash
@@ -130,11 +133,11 @@ Medical-Appointment-No-Show-Prediction
    ```
 
 5. **Model Deployment**
-   
-   For deploying the model to AWS SageMaker and setting up the necessary AWS services for model invocation and API exposure, follow step 1 to step 6 on  `Model Deployment.ipynb`. This notebook provides detailed steps for deploying the model to AWS SageMaker, creating an AWS Lambda function, and configuring an Amazon API Gateway to expose the model as a RESTful service.
+
+   For deploying the model to AWS SageMaker and setting up the necessary AWS services for model invocation and API exposure, follow step 1 to step 6 on `Model Deployment.ipynb`. This notebook provides detailed steps for deploying the model to AWS SageMaker, creating an AWS Lambda function, and configuring an Amazon API Gateway to expose the model as a RESTful service.
 
 6. **Testing and Validating with POSTMAN**
-   
+
    After deployment, follow step 7 on `Model Deployment.ipynb` to test and validate the model's functionality using POSTMAN. This involves sending requests to the deployed model's API endpoint and verifying the responses to ensure the model operates as expected.
 
 For a comprehensive understanding of the project, refer to:

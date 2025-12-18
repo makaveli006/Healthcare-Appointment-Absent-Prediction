@@ -1,0 +1,8 @@
+1) conda create --name medical_app_env python=3.10 -y
+2) cd src
+3) pip install -r requirements.txt
+4) Database: MEDICAL_APPOINTMENT_NO_SHOW
+5) Schema: APPOINTMENT_SCHEMA
+6) Table: APPOINTMENT_DATA
+7) SHOW WAREHOUSES;
+7) CREATE WAREHOUSE MY_WAREHOUSE;

@@ -1,4 +1,13 @@
 
+# FEATURE ENGINEERING SCRIPT
+# Train a Logistic Regression model → Get coefficient importance
+# Train a Decision Tree model → Get feature importance scores
+# Filter features from both models that meet the 1% threshold
+# Combine (union) the selected features from both approaches
+# Save this final feature list for use in production models
+# This approach helps reduce dimensionality while retaining the most predictive features for determining if a patient will show up to their healthcare appointment.
+# The time interval feature is particularly valuable because patients who schedule far in advance might be more likely to forget or have schedule conflicts.
+
 import pandas as pd
 import pickle
 from sklearn.linear_model import LogisticRegression
@@ -29,6 +38,7 @@ def select_and_save_important_features(train_data, target_column='NO_SHOW', outp
 
     # Get coefficients and filter important features
     logistic_coef = pd.DataFrame(logistic_model.coef_.reshape(-1, 1), index=X.columns, columns=['Coefficient'])
+    # For Logistic Regression: Keeps features with coefficient magnitude ≥ 0.01
     important_features_logistic = logistic_coef[abs(logistic_coef['Coefficient']) >= 0.01].index.values.tolist()
 
     # Initialize and fit the Decision Tree model
@@ -38,9 +48,11 @@ def select_and_save_important_features(train_data, target_column='NO_SHOW', outp
     # Get feature importances and filter important features
     feature_importances = pd.DataFrame({'Feature': X.columns, 'Importance': decision_tree_model.feature_importances_})
     feature_importances = feature_importances.sort_values('Importance', ascending=False)
+    # For Decision Tree: Keeps features with importance ≥ 0.01 (1%)
     important_features_tree = feature_importances[feature_importances['Importance'] >= 0.01]['Feature'].values.tolist()
 
     # Combine the important features from both models
+    # Combines features that are important in either model (not requiring both)
     combined_important_features_union = list(set(important_features_logistic) | set(important_features_tree))
 
     # Save the combined important features to a file

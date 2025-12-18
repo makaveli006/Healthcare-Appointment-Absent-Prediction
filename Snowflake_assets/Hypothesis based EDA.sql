@@ -1,6 +1,9 @@
 -- // Data overview //
 --================================================================================================================================
 
+
+SELECT COUNT(*) FROM MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA;
+
 --Retrieve all records in the table
 SELECT * FROM MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA;
 --> i. 14 variables including target
@@ -10,6 +13,20 @@ SELECT * FROM MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA;
 --      - Appointment-specific details: e.g. (scheduled and appointment dates, and whether the patient received a reminder SMS)
 --      - Target: whether a patient was a no-show or attended their appointment
 --> iii. 20% of no show rate based on a total record of 110k medical appointments 
+--> A 20% no-show rate means that out of all scheduled medical appointments, 20% of patients did not show up.
+--> 20% of 110,000 = 0.20 × 110,000 = 22,000
+--> You can check this by running the following query:
+SELECT 
+    COUNT(*) AS Total_Appointments,
+    SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) AS No_Show_Appointments,
+    ROUND((SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100),1) AS No_Show_Percentage,
+    SUM(CASE WHEN No_show = 'No' THEN 1 ELSE 0 END) AS Show_Appointments,
+    ROUND((SUM(CASE WHEN No_show = 'No' THEN 1 ELSE 0 END) / COUNT(*) * 100),1) AS Show_Percentage
+FROM 
+    MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA;
+
+-- You can also check this by seeing the graph in the snowflake worksheet UI. 
+-- By clicking the column name "No_show" in the result set, it will show a bar graph with the distribution of "Yes" and "No" values.
 
 --================================================================================================================================
 
@@ -28,14 +45,15 @@ SELECT
     COUNT(CASE WHEN Age IS NULL THEN 1 END) AS Missing_Age,
     COUNT(CASE WHEN Neighbourhood IS NULL THEN 1 END) AS Missing_Neighbourhood,
     COUNT(CASE WHEN Scholarship IS NULL THEN 1 END) AS Missing_Scholarship,
-    COUNT(CASE WHEN Hipertension IS NULL THEN 1 END) AS Missing_Hipertension,
+    COUNT(CASE WHEN Hypertension IS NULL THEN 1 END) AS Missing_Hipertension,
     COUNT(CASE WHEN Diabetes IS NULL THEN 1 END) AS Missing_Diabetes,
     COUNT(CASE WHEN Alcoholism IS NULL THEN 1 END) AS Missing_Alcoholism,
-    COUNT(CASE WHEN Handcap IS NULL THEN 1 END) AS Missing_Handcap,
+    COUNT(CASE WHEN Handicap IS NULL THEN 1 END) AS Missing_Handcap,
     COUNT(CASE WHEN SMS_received IS NULL THEN 1 END) AS Missing_SMS_received,
     COUNT(CASE WHEN No_show IS NULL THEN 1 END) AS Missing_No_show
 FROM
-    APPOINTMENT_DATA;
+    MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA;
+
 --> No Nulls, so not dropping any columns
 
 --================================================================================================================================
@@ -55,7 +73,7 @@ SELECT
     SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) AS Missed_Appointments,
     ROUND((SUM(CASE WHEN No_show = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100),1) AS Percentage_Missed
 FROM 
-    APPOINTMENT_DATA
+    MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA
 GROUP BY 
     Gender;
 --> Both males and females have a similar rate of missing appointments, around 20%.
@@ -67,7 +85,7 @@ WITH TimeDifference AS (
         DATEDIFF(day, ScheduledDay, AppointmentDay) AS DaysDifference,
         No_show
     FROM 
-        APPOINTMENT_DATA
+        MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA
 )
 SELECT 
     DaysDifference,

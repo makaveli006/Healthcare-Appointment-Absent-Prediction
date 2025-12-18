@@ -98,6 +98,19 @@ GROUP BY
     DaysDifference
 ORDER BY 
     DaysDifference;
+
+
+-- SPLIT ABOVE QUERY TO UNDERSTAND BETTER
+WITH TimeDifference AS (
+    SELECT 
+        DATEDIFF(day, ScheduledDay, AppointmentDay) AS DaysDifference,
+        No_show
+    FROM MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA
+)
+SELECT *
+FROM TimeDifference
+LIMIT 20;
+
 --> i. There are 5 appointments with negative days difference which they all have 100% missed appointment rate because they were scheduled for past date. This could be due to data entry errors.
 --> ii. A significant number of appointments (38,563) are scheduled on the same day, with a relatively low missed appointment rate of 4.6%.
 --> iii. For time differences between 1 day to 80 days, the missed appointment rate fluctuates but generally stays within the range of around 20% to 40%.

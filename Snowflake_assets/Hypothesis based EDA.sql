@@ -133,7 +133,7 @@ WITH AgeGroups AS (
         END AS AgeGroup,
         No_show
     FROM 
-        APPOINTMENT_DATA
+        MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA
 )
 SELECT 
     AgeGroup,

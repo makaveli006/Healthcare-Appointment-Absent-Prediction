@@ -60,7 +60,7 @@ The project is organized into several directories and files, each serving a spec
 Below is an overview of the project structure and the contents of each component:
 
 ```markdown
-Medical-Appointment-No-Show-Prediction
+Healthcare-Appointment-Absent-Prediction
 ├── data/
 │ ├── input/ # Raw data files.
 │ ├── processed/ # Data files that have been cleaned and preprocessed.
@@ -79,9 +79,9 @@ Medical-Appointment-No-Show-Prediction
 ├── model/ # Trained model files and artifacts.
 ├── deployment_assets/ # Files and scripts used for deploying the model.
 ├── Snowflake_assets/ # Original data file for database creation and SQL queries for exploratory analysis.
-├── Project Notebook.ipynb # Jupyter notebook detailing the model development process.
-├── Project Documentation.pdf # Comprehensive documentation of the project.
-├── Model Deployment.ipynb # Jupyter notebook detailing the model deployment process.
+├── 1.Project Notebook.ipynb # Jupyter notebook detailing the model development process.
+├── 2.Model Deployment.ipynb # Jupyter notebook detailing the model deployment process.
+├── 4.Project Documentation.pdf # Comprehensive documentation of the project.
 ```
 
 ## Usage
@@ -91,8 +91,8 @@ Medical-Appointment-No-Show-Prediction
    Clone the project repository to local machine.
 
    ```bash
-   git clone https://github.com/TimKong21/Medical-Appointment-No-Show-Prediction.git
-   cd Medical-Appointment-No-Show-Prediction
+   git clone https://github.com/makaveli006/Healthcare-Appointment-Absent-Prediction
+   cd Healthcare-Appointment-Absent-Prediction
    ```
 
 2. **Set Up a Virtual Environment**
@@ -102,27 +102,27 @@ Medical-Appointment-No-Show-Prediction
    ```bash
    # Create a virtual environment
    python -m venv env
-   ```
 
-   Activate the virtual environment.
-
-   ```bash
    # On Windows
    env\Scripts\activate
 
    # On MacOS/Linux
    source env/bin/activate
-   ```
 
-3. **Install Dependencies**
-
-   Install the required Python dependencies.
-
-   ```bash
    pip install -r src/requirements.txt
    ```
 
-4. **Model Training**
+   OR
+
+   ```bash
+   # Create a conda virtual environment
+   conda create --name medical_app_env python=3.10 -y
+   conda activate medical_app_env
+   cd src
+   pip install -r requirements.txt
+   ```
+
+3. **Model Training**
 
    Train the model and make predictions.
 
@@ -132,18 +132,18 @@ Medical-Appointment-No-Show-Prediction
    python predict.py
    ```
 
-5. **Model Deployment**
+4. **Model Deployment**
 
-   For deploying the model to AWS SageMaker and setting up the necessary AWS services for model invocation and API exposure, follow step 1 to step 6 on `Model Deployment.ipynb`. This notebook provides detailed steps for deploying the model to AWS SageMaker, creating an AWS Lambda function, and configuring an Amazon API Gateway to expose the model as a RESTful service.
+   For deploying the model to AWS SageMaker and setting up the necessary AWS services for model invocation and API exposure, follow step 1 to step 6 on `2.Model Deployment.ipynb`. This notebook provides detailed steps for deploying the model to AWS SageMaker, creating an AWS Lambda function, and configuring an Amazon API Gateway to expose the model as a RESTful service.
 
-6. **Testing and Validating with POSTMAN**
+5. **Testing and Validating with POSTMAN**
 
-   After deployment, follow step 7 on `Model Deployment.ipynb` to test and validate the model's functionality using POSTMAN. This involves sending requests to the deployed model's API endpoint and verifying the responses to ensure the model operates as expected.
+   After deployment, follow step 7 on `2.Model Deployment.ipynb` to test and validate the model's functionality using POSTMAN. This involves sending requests to the deployed model's API endpoint and verifying the responses to ensure the model operates as expected.
 
 For a comprehensive understanding of the project, refer to:
 
-- `Project Notebook.ipynb` for detail model development process.
+- `1.Project Notebook.ipynb` for detail model development process.
 
-- `Model Deployment.ipynb` for detail model deployment process.
+- `2.Model Deployment.ipynb` for detail model deployment process.
 
-- `Project Documentation.pdf` for comprehensive project documentation.
+- `4.Project Documentation.pdf` for comprehensive project documentation.

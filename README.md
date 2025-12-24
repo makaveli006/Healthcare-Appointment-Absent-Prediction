@@ -41,15 +41,70 @@ The dataset from [Kaggle](https://www.kaggle.com/datasets/joniarroba/noshowappoi
 
 The approach to solving the challenge of predicting patient no-shows involved a comprehensive workflow, focusing on both the development of a predictive model and its practical application within an existing system. Here's an overview of the approach taken:
 
-- **Data Storage and Initial Analysis**: Utilized Snowflake for secure data storage and conducted exploratory data analysis (EDA) to understand the dataset's characteristics and identify potential predictive features.
+- **Data Storage and Initial Analysis (./Snowflake_assets)**: Utilized Snowflake for secure data storage and conducted exploratory data analysis (EDA) to understand the dataset's characteristics and identify potential predictive features.
 
-- **Data Loading and Preprocessing**: Initial steps involved loading the data from Snowflake, followed by preprocessing tasks such as handling missing values, encoding categorical variables, and normalizing features to prepare the dataset for modeling.
+- **Data Loading and Preprocessing (1.Project Notebook.ipynb)**: Initial steps involved loading the data from Snowflake, followed by preprocessing tasks such as handling missing values, encoding categorical variables, and normalizing features to prepare the dataset for modeling.
 
-- **Feature Engineering and Selection**: Engineered meaningful features from the raw data, such as calculating the time interval between scheduling and appointment dates. The selection of features was based on their importance as determined through analysis using logistic regression and decision tree models, focusing on retaining features with at least 1% importance from either model.
+- **Feature Engineering and Selection (1.Project Notebook.ipynb)**: Engineered meaningful features from the raw data, such as calculating the time interval between scheduling and appointment dates. The selection of features was based on their importance as determined through analysis using logistic regression and decision tree models, focusing on retaining features with at least 1% importance from either model.
 
-- **Dataset and Model Selection**: Various machine learning algorithms, including Logistic Regression, Decision Tree, Random Forest, and XGBoost, were evaluated across different datasets (original, upsampled, downsampled, and SMOTE-enhanced) to identify the best-performing model. XGBoost emerged as the optimal choice, particularly when trained on the original dataset, after adjusting the `scale_pos_weight` parameter to address class imbalance effectively.
+- **Dataset and Model Selection (1.Project Notebook.ipynb)**: Various machine learning algorithms, including Logistic Regression, Decision Tree, Random Forest, and XGBoost, were evaluated across different datasets (original, upsampled, downsampled, and SMOTE-enhanced) to identify the best-performing model. XGBoost emerged as the optimal choice, particularly when trained on the original dataset, after adjusting the `scale_pos_weight` parameter to address class imbalance effectively.
 
 - **API Development for Model Deployment**: Created an API for the model, facilitating its integration into the client's ERP system. This step involved deploying the model to AWS SageMaker, setting up an AWS Lambda function for model invocation, and configuring an Amazon API Gateway to expose the model as a RESTful service.
+
+* Your trained ML model lives on AWS Sagemaker. And your ERP system (or Postman) needs a simple way to ask: “Here is a patient appointment → will they show up or not?”
+* Instead of exposing the model directly from sagemaker, you create a REST API endpoint that: Receives input data (JSON) and Sends it to the ML model and returns the prediction (Show / No-show)
+* ✅ Sample SageMaker Endpoint URL (Real Format) => https://runtime.sagemaker.us-east-1.amazonaws.com/endpoints/healthcare-noshow-xgb/invocations
+
+* runtime.sagemaker.amazonaws.com	SageMaker inference service
+* us-east-1	AWS region
+* healthcare-noshow-xgb	Your endpoint name
+* /invocations	Required path for predictions
+
+* ⚠️ Important: This URL is NOT public. Only AWS services (like Lambda, EC2, or authenticated SDK calls) can access it.
+
+* WARNING ⚠️: You cannot do this from Postman or a browser: POST https://runtime.sagemaker.us-east-1.amazonaws.com/endpoints/healthcare-noshow-xgb/invocations
+
+* Why? : It requires AWS Signature V4 authentication or it must be called inside AWS (with IAM permission) or with AWS credentials
+
+* ✅ How It’s Actually Called (Inside Lambda)
+
+```python
+import boto3
+import json
+
+runtime = boto3.client("sagemaker-runtime")
+
+response = runtime.invoke_endpoint(
+    EndpointName="healthcare-noshow-xgb",
+    ContentType="application/json",
+    Body=json.dumps({
+        "Gender": "F",
+        "Age": 45,
+        "Hypertension": 1,
+        "Diabetes": 0,
+        "Alcoholism": 0,
+        "Scholarship": 1,
+        "SMS_received": 1,
+        "Days_Between": 7
+    })
+)
+
+prediction = json.loads(response["Body"].read())
+
+# ✔ This is the correct way
+# ✔ Lambda already has IAM permission
+# ✔ No passwords or keys hardcoded
+
+```
+
+
+* ✅ Public API URL (What Postman / ERP Uses)
+* This is created by API Gateway, not SageMaker:
+* https://a1b2c3d4.execute-api.us-east-1.amazonaws.com/prod/predict
+* SageMaker endpoint → “Model brain”
+* Lambda → “Translator”
+* API Gateway → “Public door”
+
 
 - **Testing and Validation**: Conducted thorough testing of the deployed model using Postman, validating its functionality and ensuring its readiness for real-world application.
 

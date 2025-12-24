@@ -1,0 +1,3 @@
+conda activate setup_project_env
+cd "Notebook to py Files"
+python converter.py

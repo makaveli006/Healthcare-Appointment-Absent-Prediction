@@ -12,9 +12,9 @@ SELECT * FROM MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA;
 --      - Health characteristics: e.g. (diabetes or hypertension)
 --      - Appointment-specific details: e.g. (scheduled and appointment dates, and whether the patient received a reminder SMS)
 --      - Target: whether a patient was a no-show or attended their appointment
---> iii. 20% of no show rate based on a total record of 110k medical appointments 
+--> iii. 20% of no show rate based on a total record of 110527 medical appointments 
 --> A 20% no-show rate means that out of all scheduled medical appointments, 20% of patients did not show up.
---> 20% of 110,000 = 0.20 × 110,000 = 22,000
+--> 20% of 110,527 = 0.20 × 110,527 = 22,319
 --> You can check this by running the following query:
 SELECT 
     COUNT(*) AS Total_Appointments,
@@ -79,7 +79,7 @@ GROUP BY
 --> Both males and females have a similar rate of missing appointments, around 20%.
 
 
--- 2. Is there is any relationship between the scheduled and appointment day difference, and the no-show of patients? 
+-- 2. Is there any relationship between the scheduled and appointment day difference, and the no-show of patients? 
 WITH TimeDifference AS (
     SELECT 
         DATEDIFF(day, ScheduledDay, AppointmentDay) AS DaysDifference,
@@ -111,8 +111,34 @@ SELECT *
 FROM TimeDifference
 LIMIT 20;
 
+
+WITH TimeDifference AS (
+    SELECT 
+        DATEDIFF(day, ScheduledDay, AppointmentDay) AS DaysDifference,
+        No_show
+    FROM MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA
+)
+SELECT DaysDifference
+FROM TimeDifference
+LIMIT 20;
+
+
+WITH TimeDifference AS (
+    SELECT 
+        DATEDIFF(day, ScheduledDay, AppointmentDay) AS DaysDifference,
+        No_show
+    FROM MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA
+)
+SELECT No_show
+FROM TimeDifference
+LIMIT 20;
+
 --> i. There are 5 appointments with negative days difference which they all have 100% missed appointment rate because they were scheduled for past date. This could be due to data entry errors.
 --> ii. A significant number of appointments (38,563) are scheduled on the same day, with a relatively low missed appointment rate of 4.6%.
+--> SEE INBUILD CHART FROM SNOWFLAKE FOR BETTER VISUALIZATION (SELECT BAR CHART)
+--> X axis: DaysDifference
+--> Y axis: Percentage_Missed
+
 --> iii. For time differences between 1 day to 80 days, the missed appointment rate fluctuates but generally stays within the range of around 20% to 40%.
 --> iv. The longer time differences (>80 days) have varying missed appointment rates, like on: 
 --      - day 83 (12.5%), 86 (16.7%)
@@ -146,6 +172,23 @@ GROUP BY
     AgeGroup
 ORDER BY 
     AgeGroup;
+
+
+WITH AgeGroups AS (
+    SELECT 
+        CASE 
+            WHEN Age BETWEEN 0 AND 12 THEN '0-12'
+            WHEN Age BETWEEN 13 AND 17 THEN '13-17'
+            WHEN Age BETWEEN 18 AND 30 THEN '18-30'
+            WHEN Age BETWEEN 31 AND 50 THEN '31-50'
+            ELSE '50+'
+        END AS AgeGroup,
+        No_show
+    FROM 
+        MEDICAL_APPOINTMENT_NO_SHOW.APPOINTMENT_SCHEMA.APPOINTMENT_DATA
+)
+SELECT * FROM AgeGroups
+LIMIT 20;
 --> i. The age group of 13-17 years has the highest no-show rate at 26.6% (even they have least appointments scheduled), followed by age group of 18-30 with 24.6%  missed appointment rate.
 --> ii. In contrast, the age group 50+ years has the lowest no-show rate at 16.2% (even they have highest number of appointments scheduled).
 
